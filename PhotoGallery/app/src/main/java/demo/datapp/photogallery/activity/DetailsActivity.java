@@ -11,6 +11,8 @@ import android.transition.Fade;
 import android.transition.Transition;
 import android.transition.TransitionSet;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -52,7 +54,6 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     private LinearLayout footer;
     Animation fadeInAnimation;
     Animation fadeOutAnimation;
-    private View mDecorView;
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -64,6 +65,9 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
@@ -210,6 +214,17 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         return null;
     }
 
+    public void toggleUI() {
+        if (hidden) {
+            header.startAnimation(fadeInAnimation);
+            footer.startAnimation(fadeInAnimation);
+        } else {
+            header.startAnimation(fadeOutAnimation);
+            footer.startAnimation(fadeOutAnimation);
+        }
+        hidden = !hidden;
+    }
+
     @Override
     public void finishAfterTransition() {
         mIsReturning = true;
@@ -222,14 +237,3 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     }
 }
 
-
-/*  if (hidden) {
-        header.startAnimation(fadeInAnimation);
-        footer.startAnimation(fadeInAnimation);
-        showSystemUI();
-    } else {
-        header.startAnimation(fadeOutAnimation);
-        footer.startAnimation(fadeOutAnimation);
-        hideSystemUI();
-    }
-    hidden = !hidden;*/
