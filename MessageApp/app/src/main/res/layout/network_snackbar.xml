@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:orientation="horizontal"
+        style="@style/NetworkErrorDialog"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+        <TextView
+            android:textColor="@android:color/white"
+            android:text="@string/network_status_error_text"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/network_error_action"
+            android:layout_gravity="center"
+            style="@style/NetworkErrorAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</merge>

@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Message App</string>
+    <string name="title_activity_main">Messages</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="message_url">http://message-list.appspot.com/messages?limit={limit}</string>
+    <string name="message_author_avatar_url_prefix">http://message-list.appspot.com</string>
+    <string name="network_status_action_text">Try Again</string>
+    <string name="network_status_dismiss_text">Dismiss</string>
+    <string name="network_status_error_text">Connection Lost. Showing limited messages.</string>
+    <string name="network_status_title_text">Connection Lost</string>
+    <string name="parse_error_prefix">"Bad data format: "</string>
+    <string name="request_call_error_prefix">"API call error: "</string>
+</resources>
