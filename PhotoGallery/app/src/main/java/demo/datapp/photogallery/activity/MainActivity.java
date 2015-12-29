@@ -28,6 +28,7 @@ import demo.datapp.photogallery.model.PhotoModel;
 public class MainActivity extends AppCompatActivity {
     static final String EXTRA_CURRENT_ITEM_POSITION = "extra_current_item_position";
     static final String EXTRA_OLD_ITEM_POSITION = "extra_old_item_position";
+    private final String TEST_PHOTO_DIR = "photos";
 
     private static final String TAG = MainActivity.class.getName();
     private final int ITEM_PER_ROW = 2;
@@ -35,10 +36,22 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<PhotoModel> photosList;
     private PhotoAdapter photoAdapter;
-    private View mDecorView;
 
     private Bundle mTmpState;
     private boolean mIsReentering;
+
+    public enum PhotosSource {
+        TEST(1),
+        GPhotos(2),
+        SDCARD(3);
+        private int value;
+        private PhotosSource(int value) {
+            this.value = value;
+        }
+        public int getValue() {
+            return value;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setExitSharedElementCallback(mCallback);
 
-        mDecorView = getWindow().getDecorView();
         photosList = new ArrayList<>();
         photoAdapter = new PhotoAdapter(this, photosList);
         photosView = (RecyclerView) findViewById(R.id.photos_view);
@@ -56,19 +68,24 @@ public class MainActivity extends AppCompatActivity {
         photosView.setLayoutManager(mLayoutManager);
         photosView.setAdapter(photoAdapter);
 
-        listFiles("photos");
+        loadPhotos(PhotosSource.TEST);
     }
 
-    private void listFiles(String dirFrom) {
+    public void loadPhotos(PhotosSource src) {
+        if(src == PhotosSource.TEST)
+            _listTestPhotos();
+    }
+
+    private void _listTestPhotos() {
         if(photoAdapter.getItemCount() > 0) {
             photoAdapter.clear();
         }
         Resources resources = getResources();
         AssetManager assetManager = resources.getAssets();
-        String fileList[] = new String[0];
+        String fileList[];
         ImageValidator imageValidator = new ImageValidator();
         try {
-            fileList = assetManager.list(dirFrom);
+            fileList = assetManager.list(TEST_PHOTO_DIR);
             PhotoModel photoModel;
             int i = 0;
             for (String s:fileList) {
@@ -79,9 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            Log.e("TAG", "error loading files");
+            Log.e(TAG, "error loading files: " + e.getMessage());
         }
     }
 
@@ -180,22 +195,4 @@ public class MainActivity extends AppCompatActivity {
                                        List<View> sharedElementSnapshots) {
         }
     };
-
-    private void hideSystemUI() {
-        mDecorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE);
-    }
-
-    private void showSystemUI() {
-        mDecorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-    }
-
 }

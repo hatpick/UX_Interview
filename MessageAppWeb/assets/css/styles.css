@@ -1,6 +1,6 @@
 html, body {
 	font-family: "RobotoDraft","Roboto",sans-serif;
-	font-size: 1em;	
+	font-size: 1em;		
 }
 
 @font-face {
@@ -91,9 +91,35 @@ header {
 	opacity: 1;
 }
 
-.card-holder {
-	-webkit-transition: opacity 300ms ease-in;
-	opacity: 1;
+.card-holder {			
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	-ms-user-select: none;	
+	user-select: none;	
+	
+	-webkit-transform: translate3d(0,0,0);
+	-moz-transform: translate3d(0,0,0);
+	-o-transform: translate3d(0,0,0);
+	-ms-transform: translate3d(0,0,0);		
+	overflow: hidden;	
+	opacity: 1;	
+	max-height: 1000px;
+}
+
+.card-holder.animated {	
+	
+	-webkit-transition: all 200ms ease-out;
+	-moz-transition: all 200ms ease-out;
+	-o-transition: all 200ms ease-out;
+	-ms-transition: all 200ms ease-out;	
+}
+
+.card-holder.hidden {
+	-webkit-transform: translate3d(100%, 0, 0) !important;
+	-moz-transform: translate3d(100%, 0, 0) !important;
+	-o-transform: translate3d(100%, 0, 0) !important;
+	-ms-transform: translate3d(100%, 0, 0) !important;	
 }
 
 .author-avatar {
@@ -120,6 +146,24 @@ header {
 	font-size: 12px;
 	font-weight: 300;
 	color: #000;
+	opacity: 0.6;
+}
+
+.come-in {
+  transform: translateY(150px);
+  animation: come-in 0.8s ease forwards;
+}
+
+@keyframes come-in {
+  to { transform: translateY(0); }
+}
+
+.already-visible {
+    -ie-transform: translateY(0);
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    -webkit-animation: none;
+    animation: none
 }
 
 .message-content {

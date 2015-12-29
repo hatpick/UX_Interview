@@ -35,9 +35,6 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     private static final String STATE_CURRENT_POSITION = "state_current_position";
     private static final String STATE_OLD_POSITION = "state_old_position";
 
-    static final String EXTRA_CURRENT_ITEM_POSITION = "extra_current_item_position";
-    static final String EXTRA_OLD_ITEM_POSITION = "extra_old_item_position";
-
     private int mCurrentPosition;
     private int mOriginalPosition;
     private boolean mIsReturning;
@@ -65,9 +62,6 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
@@ -75,7 +69,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         setEnterSharedElementCallback(mCallback);
 
         if (savedInstanceState == null) {
-            mCurrentPosition = getIntent().getExtras().getInt(EXTRA_CURRENT_ITEM_POSITION);
+            mCurrentPosition = getIntent().getExtras().getInt(MainActivity.EXTRA_CURRENT_ITEM_POSITION);
             mOriginalPosition = mCurrentPosition;
             photos = getIntent().getParcelableArrayListExtra("photos");
         } else {
@@ -218,11 +212,25 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         if (hidden) {
             header.startAnimation(fadeInAnimation);
             footer.startAnimation(fadeInAnimation);
+            setFullscreen(false);
         } else {
             header.startAnimation(fadeOutAnimation);
             footer.startAnimation(fadeOutAnimation);
+            setFullscreen(true);
         }
         hidden = !hidden;
+    }
+
+    private void setFullscreen(boolean fullscreen)
+    {
+        View decorView = getWindow().getDecorView();
+        if(fullscreen)
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        else
+            decorView.setSystemUiVisibility(0);
     }
 
     @Override
@@ -230,8 +238,8 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         mIsReturning = true;
         getWindow().setReturnTransition(makeReturnTransition());
         Intent data = new Intent();
-        data.putExtra(EXTRA_OLD_ITEM_POSITION, getIntent().getExtras().getInt(EXTRA_CURRENT_ITEM_POSITION));
-        data.putExtra(EXTRA_CURRENT_ITEM_POSITION, mCurrentPosition);
+        data.putExtra(MainActivity.EXTRA_OLD_ITEM_POSITION, getIntent().getExtras().getInt(MainActivity.EXTRA_CURRENT_ITEM_POSITION));
+        data.putExtra(MainActivity.EXTRA_CURRENT_ITEM_POSITION, mCurrentPosition);
         setResult(RESULT_OK, data);
         super.finishAfterTransition();
     }
